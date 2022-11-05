@@ -5,22 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page title</title>
     <link rel="stylesheet" href="./sass/index.scss" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Raleway:wght@700&family=Roboto:wght@500&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <form class="search-form" id="search-form">
-      <input
-        type="text"
-        name="searchQuery"
-        autocomplete="off"
-        placeholder="Search images..."
-      />
-      <button type="submit">Search</button>
-    </form>
-    <div class="gallery"></div>
-
-    <!-- ❗️❗️❗️ Add partials like so for every page -->
-    <!-- <include src="./partials/example.html"></include> -->
-    <!-- <script type="module" src="./js/api.js"></script> -->
+    <header class="header">
+      <div class="container">
+        <div class="site-nav">
+          <div class="logo">
+            <img src="./images/film.png" alt="logo" width="24" height="24" />
+            <span class="logo-text">Filmoteka</span>
+          </div>
+          <div class="site-nav__menu">
+            <a href="/" class="site-nav__item">HOME</a>
+            <a href="/" class="site-nav__item">LIBRARY</a>
+          </div>
+        </div>
+        <div class="form-cont">
+          <form id="form" type="submit">
+            <input
+              type="text"
+              placeholder="Movie search"
+              id="search"
+              class="search"
+            />
+          </form>
+        </div>
+      </div>
+    </header>
+    <div class="container">
+      <main id="main">
+        <div class="movie">
+          <img src="./images/1x-bcg-header-tablet.jpg" alt="" width="100px" />
+          <div class="movie-info">
+            <h3 class="movie-title">Movie Title</h3>
+            <span class="green">9.8</span>
+          </div>
+        </div>
+      </main>
+      <footer>
+        <div class="container">
+          <div class="footer"></div>
+        </div>
+      </footer>
+    </div>
     <script type="module" src="./index.js"></script>
   </body>
 </html>

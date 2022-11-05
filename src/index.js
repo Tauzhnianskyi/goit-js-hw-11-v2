@@ -1,66 +1,63 @@
-import getPic from './js/api';
+const BASE_URL = 'https://api.themoviedb.org/3';
+const API_KEY = 'api_key=14f00e78a1ac618254d40a79e60e9f37';
+const API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&' + API_KEY;
+const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+const searchURL = BASE_URL + '/search/keyword?' + API_KEY;
 
-refs = {
-  input: document.querySelector('input[type="text"]'),
-  submitBtn: document.querySelector('button[type="submit"]'),
-  gallery: document.querySelector('.gallery'),
-};
+const main = document.getElementById('main');
+const form = document.querySelector('form');
+const search = document.getElementById('search');
+const searchBtn = document.querySelector('.searchBtn');
+console.log(search.value);
 
-refs.input.addEventListener('input', debounce(onSearch, 500));
+getMovies(API_URL);
 
-function fetchImg(searchData) {
-  const BASE_URL = 'https://pixabay.com/api';
-  const API_KEY = '30150514-c6c2592e7290a81c416aa6291';
-  const URL = `${BASE_URL}/?key=${API_KEY}&q=all&orientation=horizontal&safesearch=true&image_type=photo&per_page=40&page=1`;
-
-  return fetch(URL).then(resp => resp.json());
+function getMovies(url) {
+  fetch(url)
+    .then(resp => resp.json())
+    .then(data => {
+      showMovies(data.results);
+    });
 }
 
-function onSearch(e) {
+function showMovies(data) {
+  main.innerHTML = '';
+
+  data.forEach(movie => {
+    const { title, backdrop_path, vote_average } = movie; 
+    const movieEl = document.createElement('div');
+    movieEl.classList.add('movie');
+    movieEl.innerHTML = `
+    <img src="${IMG_URL + backdrop_path}" alt="${title}" width="100px" />
+        <div class="movie-info">
+          <h3 class="movie-title">${title}</h3>
+          <span class="${getColor(vote_average)}">${vote_average}</span>
+          </div>
+    
+    `;
+    main.appendChild(movieEl);
+  });
+}
+
+function getColor(vote) {
+  if (vote >= 8) {
+    return 'green';
+  } else if (vote >= 5 && vote < 8) {
+    return 'orange';
+  } else {
+    return 'red';
+  }
+}
+
+form.addEventListener('submit', e => {
   e.preventDefault();
-  const searchImg = refs.input.value.toLowerCase().reim();
 
-  fetchImg(searchImg)
-    .then(createGallery)
-    .catch(err => console.log(err));
-}
+  const searchTerm = search.value;
+  console.log(searchTerm);
 
-function createGallery(responceAPI) {
-  console.log('createGallery - fetchData', responseAPI.hits);
-
-  const galleryList = responseAPI
-    .map(image => renderGalleryCard(image.hits))
-    .join('');
-  refs.gallery.inserAdjacentHTML('beforeend', galleryList);
-}
-
-function renderGalleryCard(array) {
-  const {
-    webformatURL,
-    largeImageURL,
-    tags,
-    likes,
-    views,
-    comments,
-    downloads,
-  } = array.hits;
-  console.log('renderGalleryCad'.array.hits);
-
-  return `<div class="photo-card">
-  <img src="" alt="" loading="lazy" />
-  <div class="info">
-    <p class="info-item">
-      <b>Likes</b>
-    </p>
-    <p class="info-item">
-      <b>Views</b>
-    </p>
-    <p class="info-item">
-      <b>Comments</b>
-    </p>
-    <p class="info-item">
-      <b>Downloads</b>
-    </p>
-  </div>
-</div>`;
-}
+  if (searchTerm) {
+    getMovies(searchURL + '&query=' + searchTerm);
+  } else {
+    getMovies(API_URL);
+  }
+});
