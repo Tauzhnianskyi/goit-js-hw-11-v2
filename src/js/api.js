@@ -12,7 +12,7 @@ async function getMovies(url) {
     });
 }
 
-function showMovies(data) {
+export default function showMovies(data) {
   main.innerHTML = '';
 
   data.forEach(movie => {
@@ -52,7 +52,7 @@ function showMovies(data) {
 
     const wishBtn = document.querySelector(`.btn-${id}`);
     wishBtn.addEventListener('click', function handleClick() {
-      window.localStorage.setItem(`movie#${id}`, JSON.stringify(Storage));
+      window.localStorage.setItem(`${id}`, JSON.stringify(Storage));
     });
   });
 }
